@@ -3,7 +3,7 @@
 /*
 (\_/)
 ( •_•)
-/ > Bunny Hold 
+/ > Bunny Hold
 */
 
 pragma solidity ^0.8.0;
@@ -1197,33 +1197,33 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 
 
 contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
-    
-    uint256 private _maxSupply = 1000; // most we will ever have - this number can be lowered but not raised 
-    
+
+    uint256 private _maxSupply = 1000; // most we will ever have - this number can be lowered but not raised
+
     string[] private _colorSwatchIds = [
-        "dusk",
-        "midnight",
-        "stealth",
-        "fire",
-        "blood",
-        "beauty",
-        "deep",
-        "slate",
-        "neon"
+        "Dusk",
+        "Midnight",
+        "Stealth",
+        "Fire",
+        "Blood",
+        "Beauty",
+        "Deep",
+        "Slate",
+        "Neon"
     ];
-    
+
     string[] private _colorSwatchOnes = [
         "#80F",
         "#305",
         "#026",
-        "#fb3", 
+        "#fb3",
         "#a00",
         "#d18",
         "#1bb",
         "#456",
         "#0cc"
     ];
-    
+
     string[] private _colorSwatchTwos = [
         "#f40",
         "#d0f",
@@ -1234,56 +1234,56 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         "#303",
         "#233",
         "#f1f"
-    ]; 
-    
+    ];
+
     string[] private _backgroundIds = [
-        "blank",
-        "dots",
-        "chevrons",
-        "triangles",
-        "squares",
-        "diamonds",
-        "bricks"
-    ]; 
-    
-    string[] private _backgrounds = [ 
+        "Blank",
+        "Dots",
+        "Chevrons",
+        "Triangles",
+        "Squares",
+        "Diamonds",
+        "Bricks"
+    ];
+
+    string[] private _backgrounds = [
         '<pattern id="b" x="0" y="0" width="100" height="100"><rect fill="#fff" fill-opacity="0" width="100" height="100"></rect></pattern>',
         '<pattern id="b" x="0" y="0" width="90" height="90" patternUnits="userSpaceOnUse"><g fill="#fff" fill-opacity="0.2"><circle xmlns="http://www.w3.org/2000/svg" fill-opacity="1" fill="#06B" cx="45" cy="45" r="10"/><circle cx="0" cy="90" r="10"/><circle cx="90" cy="90" r="10"/><circle cx="90" cy="0" r="10"/><circle cx="0" cy="0" r="10"/></g></pattern>',
         '<pattern id="b" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse"><polygon fill="#fff" fill-opacity="0.2" points="24 24 12 24 18 18 24 12 24 0 24 0 12 12 0 0 0 12 6 18 12 24 24 24 "/></pattern>',
         '<pattern id="b" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse"><polygon fill="#fff" fill-opacity="0.2" points="0 0 12 0 0 12"/></pattern>',
-        '<pattern id="b" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect fill="#fff" fill-opacity="0.2" x="20" y="20" width="20" height="20"></rect></pattern>', 
+        '<pattern id="b" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect fill="#fff" fill-opacity="0.2" x="20" y="20" width="20" height="20"></rect></pattern>',
         '<pattern id="b" x="10" y="10" width="20" height="20" patternUnits="userSpaceOnUse"><circle fill="#fff" cx="10" cy="10" r="10" opacity="0.1"/></pattern>',
         '<pattern id="b" x="0" y="0" width="42" height="42" patternUnits="userSpaceOnUse"><g fill="none" fill-rule="evenodd"><g fill="#fff" fill-opacity="0.15"><path d="M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z"/></g></g></pattern>'
-    ]; 
-    
+    ];
+
     string[] private _earIds = [
-        'pointy',
-        'furry',
-        'kitty'
-    ]; 
-    
+        'Pointy',
+        'Furry',
+        'Kitty'
+    ];
+
     string[] private _ears = [
         '(\\_/)',
         '{\\__/}',
         '/\\_/\\'
-    ]; 
-    
+    ];
+
     string[] private _faceIds = [
-        'calm',
-        'puzzled',
-        'kitty',
-        'mischievous',
-        'happy',
-        'skeptical',
-        'kawaii',
-        'derpy',
-        'loud',
-        'disappointed',
-        'mysterious',
-        'rabid',
-        'human'
-    ]; 
-    
+        'Calm',
+        'Puzzled',
+        'Kitty',
+        'Mischievous',
+        'Happy',
+        'Skeptical',
+        'Kawaii',
+        'Derpy',
+        'Loud',
+        'Disappointed',
+        'Mysterious',
+        'Rabid',
+        'Human'
+    ];
+
     string[] private _faces = [
         unicode"( •_•)",
         unicode"( • . •)",
@@ -1298,148 +1298,344 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         unicode"(｡◕◕)",
         unicode"(ミ●﹏☉)",
         unicode"( ͡° ͜ʖ ͡°)"
-    ]; 
-    
+    ];
+
     string[] private _bodyIds = [
-        'forward',
-        'paw',
-        'back'
-    ]; 
-    
+        'Forward',
+        'Paw',
+        'Back'
+    ];
+
     string[] private _bodies = [
         unicode"/ &gt;",
         unicode"/づ",
         unicode"&lt; \\"
-    ]; 
-    
+    ];
+
+    /* food starts at 1F347 (grapes), through 1F34A, 1F32F, 1F361, 1F377, to 1F9CA (ice) */
     string[] private _emojis = [
-        unicode"🚀"
-    ]; 
-    
+        unicode"💀",
+        unicode"💩",
+        unicode"🧳",
+        unicode"🎃",
+        unicode"🧵",
+        unicode"🧶",
+        unicode"🧦",
+        unicode"🩲",
+        unicode"👛",
+        unicode"🎒",
+        unicode"🎩",
+        unicode"💍",
+        unicode"🐣",
+        unicode"🐌",
+        unicode"💐",
+        unicode"🌸",
+        unicode"🌹",
+        unicode"🍀",
+        unicode"🍄",
+        unicode"🦀",
+        unicode"🌎",
+        unicode"🌞",
+        unicode"🌟",
+        unicode"🌪️",
+        unicode"🌈",
+        unicode"⛄",
+        unicode"🔥",
+        unicode"🎄",
+        unicode"🍉",
+        unicode"🍍",
+        unicode"🍎",
+        unicode"🍑",
+        unicode"🍒",
+        unicode"🍆",
+        unicode"🍞",
+        unicode"🧀",
+        unicode"🍕",
+        unicode"🌮",
+        unicode"🍿",
+        unicode"🍙",
+        unicode"🍣",
+        unicode"🥡",
+        unicode"🍦",
+        unicode"🍪",
+        unicode"🎂",
+        unicode"🧁",
+        unicode"🍼",
+        unicode"🍵",
+        unicode"🍹",
+        unicode"🍺",
+        unicode"🥤",
+        unicode"🧊",
+        unicode"🤸",
+        unicode"🏆",
+        unicode"⚽",
+        unicode"⚾",
+        unicode"🏀",
+        unicode"🏓",
+        unicode"🎣",
+        unicode"🎱",
+        unicode"🎮",
+        unicode"🎲",
+        unicode"🧩",
+        unicode"🎨",
+        unicode"🎤",
+        unicode"🎸",
+        unicode"🥁",
+        unicode"🎬",
+        unicode"🌋",
+        unicode"🚘",
+        unicode"🚨",
+        unicode"🪐",
+        unicode"🚀",
+        unicode"💌",
+        unicode"💣",
+        unicode"🔪",
+        unicode"🧭",
+        unicode"🛎️",
+        unicode"⏱️",
+        unicode"🧨",
+        unicode"🎉",
+        unicode"🧧",
+        unicode"🎁",
+        unicode"🕹️",
+        unicode"🧸",
+        unicode"💎",
+        unicode"📻",
+        unicode"📱",
+        unicode"📟",
+        unicode"💻",
+        unicode"📸",
+        unicode"📹",
+        unicode"🔎",
+        unicode"💡",
+        unicode"🏮",
+        unicode"📓",
+        unicode"📖",
+        unicode"🗞️",
+        unicode"💰",
+        unicode"💳",
+        unicode"📦",
+        unicode"🗑️",
+        unicode"🔒",
+        unicode"🔑",
+        unicode"🛡️",
+        unicode"🧲",
+        unicode"🧪",
+        unicode"💉",
+        unicode"💊",
+        unicode"🧹",
+        unicode"🧻",
+        unicode"🧯",
+        unicode"💝",
+        unicode"🃏",
+        unicode"🀄",
+        unicode"🎴",
+        unicode"🔔"
+    ];
+
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
-    
-    function pluck(uint256 rand) internal pure returns (string memory) { 
-        string memory emoji; 
-        
-        emoji = unicode"🥀"; 
 
-        return string(abi.encodePacked(emoji)); 
-        
+    function pluck(uint256 rand) internal pure returns (string memory) {
+        string memory emoji;
+
+        emoji = unicode"🥀";
+
+        return string(abi.encodePacked(emoji));
+
     }
-    
-    function bunnyEars(uint256 tokenId) public view returns (string memory) { 
+
+    function bunnyEars(uint256 tokenId) public view returns (string memory) {
         address owner = ownerOf(tokenId);
         require(owner != address(0), "ERC721: tokenURI query for nonexistent token");
-        return _ears[2]; 
+        return _ears[2];
     }
-    
-    function bunnyFace(uint256 tokenId) public view returns (string memory) { 
+
+    function bunnyFace(uint256 tokenId) public view returns (string memory) {
         address owner = ownerOf(tokenId);
         require(owner != address(0), "ERC721: tokenURI query for nonexistent token");
-        return _faces[10]; 
+        return _faces[10];
     }
-    
-    function bunnyBody(uint256 tokenId) public view returns (string memory) { 
+
+    function bunnyBody(uint256 tokenId) public view returns (string memory) {
         address owner = ownerOf(tokenId);
         require(owner != address(0), "ERC721: tokenURI query for nonexistent token");
-        return _bodies[2]; 
+        return _bodies[2];
     }
-    
-    function bunnyString(uint256 tokenId) public view returns (string memory) { 
+
+    function bunnyString(uint256 tokenId) public view returns (string memory) {
         address owner = ownerOf(tokenId);
         require(owner != address(0), "ERC721: tokenURI query for nonexistent token");
-        
+
         string[4] memory parts; /*
-        
-        parts[0] = emoji1(tokenId); 
-        parts[1] = emoji2(tokenId); 
-        parts[2] = emoji3(tokenId); 
-        
-        parts[3] = emoji4(tokenId); 
-        parts[4] = emoji5(tokenId); 
-        parts[5] = emoji6(tokenId); 
-        
-        parts[6] = emoji7(tokenId); 
-        parts[7] = emoji8(tokenId); 
+
+        parts[0] = emoji1(tokenId);
+        parts[1] = emoji2(tokenId);
+        parts[2] = emoji3(tokenId);
+
+        parts[3] = emoji4(tokenId);
+        parts[4] = emoji5(tokenId);
+        parts[5] = emoji6(tokenId);
+
+        parts[6] = emoji7(tokenId);
+        parts[7] = emoji8(tokenId);
         parts[8] = emoji9(tokenId); */
-        
-        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3])); 
-        
+
+        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3]));
+
 //        output = string(abi.encodePacked(output, parts[5], parts[6], parts[7], parts[8]));
 
         return output;
     }
-    
+
     function tokenURI(uint256 tokenId) override public view returns (string memory) {
         address owner = ownerOf(tokenId);
         require(owner != address(0), "ERC721: tokenURI query for nonexistent token");
-        
-        string memory animal = "Bunny"; 
-        string memory colorSwatchId = _colorSwatchIds[0]; 
-        string memory colorSwatchOne = _colorSwatchOnes[0]; 
-        string memory colorSwatchTwo = _colorSwatchTwos[0]; 
-        string memory backgroundId = _backgroundIds[3]; 
-        string memory background = _backgrounds[0]; 
-        
-        string[8] memory parts;
-        
+
+        // random background color swatch
+        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _colorSwatchIds.length;
+        string memory colorSwatchId = _colorSwatchIds[rand];
+        string memory colorSwatchOne = _colorSwatchOnes[rand];
+        string memory colorSwatchTwo = _colorSwatchTwos[rand];
+
+        // random background bg
+        if(tokenId < 386) {
+            rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _backgroundIds.length;
+        }
+        else {
+            rand = 0;
+        }
+        string memory backgroundId = _backgroundIds[rand];
+        string memory background = _backgrounds[rand];
+
+        // 3 types of ears, differing rarity
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        string memory earId = _earIds[0];
+        string memory ears = _ears[0];
+        if(rand > 5) {
+            earId = _earIds[2];
+            ears = _ears[2];
+        }
+        else if(rand > 3) {
+            earId = _earIds[1];
+            ears = _ears[1];
+        }
+
+        // 13 types of faces, also differing rarity
+        uint256 faceRange = 5;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 5;
+        if(rand >= 4) {
+            faceRange = 13;
+        }
+        else if(rand >= 2) {
+            faceRange = 10;
+        }
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % faceRange;
+        string memory faceId = _faceIds[rand];
+        string memory face = _faces[rand];
+
+        // use face to determine if kitty or human
+        string memory animal = "Bunny";
+        if(faceId == "Human") {
+            animal = "Human";
+        }
+        else if(earId == "Kitty") {
+            animal = "Kitty";
+        }
+
+        // 3 types of bodies, also differing rarity
+        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % 9;
+        string memory bodyId = _bodyIds[0];
+        string memory body = _bodies[0];
+        if(rand >= 8) {
+            bodyId = _bodyIds[2];
+            body = _bodies[2];
+        }
+        else if(rand >= 6) {
+            bodyId = _bodyIds[1];
+            body = _bodies[1];
+        }
+
+        // lots of possible emoji
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _emojis.length;
+        string memory emoji = _emojis[rand];
+        if(bodyId == "Back") {
+            body = string(abi.encodePacked(emoji, body));
+        }
+        else {
+            body = string(abi.encodePacked(body, emoji));
+        }
+
+        string[14] memory parts;
+
         parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 200 200">';
-        parts[1] = "<style>text{font-size:32pt;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:bold}.tt{fill:white}#stop1{stop-color:"; 
-        parts[2] = colorSwatchOne; 
-        parts[3] = '}#stop2{stop-color:'; 
-        parts[4] = colorSwatchTwo; 
+        parts[1] = "<style>text{font-size:32pt;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:bold}.tt{fill:white}#stop1{stop-color:";
+        parts[2] = colorSwatchOne;
+        parts[3] = '}#stop2{stop-color:';
+        parts[4] = colorSwatchTwo;
         parts[5] = "}</style><defs><linearGradient id='a' x1='0' x2='0' y1='0' y2='1'><stop offset='0' id='stop1' /><stop offset='1' id='stop2' /></linearGradient></defs><rect width='100%' height='100%' fill='url(#a)'/>";
-        parts[6] = background; 
-        parts[7] = "<rect width='100%' height='100%' fill='url(#b)'/></svg>"; 
-        
-        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7])); 
-        
-        parts[0] = '[{"trait_type":"BG","value":"'; 
-        parts[1] = backgroundId; 
-        parts[2] = '"},{"trait_type":"Swatch","value":"'; 
-        parts[3] = colorSwatchId; 
-        parts[4] = '"}]';
-        
-        string memory attributes = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4])); 
-        
-        /* future traits to add: 
+        parts[6] = background;
+        parts[7] = "<rect width='100%' height='100%' fill='url(#b)'/></svg>";
+
+        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]));
+
+        parts[0] = '[{"trait_type":"Pattern","value":"';
+        parts[1] = backgroundId;
+        parts[2] = '"},{"trait_type":"Backdrop","value":"';
+        parts[3] = colorSwatchId;
+        parts[4] = '"},{"trait_type":"Creature","value":"';
+        parts[5] = animal;
+        parts[6] = '"},{"trait_type":"Ears","value":"';
+        parts[7] = earId;
+        parts[8] = '"},{"trait_type":"Face","value":"';
+        parts[9] = faceId;
+        parts[10] = '"},{"trait_type":"Body","value":"';
+        parts[11] = bodyId;
+        parts[12] = '"},{"trait_type":"Holding","value":"';
+        parts[13] = emoji;
+        parts[14] = '"]';
+
+        string memory attributes = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]));
+
+        attributes = string(abi.encodePacked(attributes, parts[7], parts[8], parts[9], parts[10], parts[11], parts[12]));
+
+        /* future traits to add:
             type of animal
-            type of pose 
-            emoji held 
-        */ 
-        
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Bunny Hold #', toString(tokenId), '", "description": "A beautiful garden stored entirely on-chain, easy to extract and build upon. Feel free to use this garden in any way you want.", "attributes": ', attributes, ', "image": "data:image/svg+xml;base64,', Base64.encode(bytes(output)), '"}'))));
+            type of pose
+            emoji held
+        */
+
+        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "', animal, ' #', toString(tokenId), '", "description": "A beautiful garden stored entirely on-chain, easy to extract and build upon. Feel free to use this garden in any way you want.", "attributes": ', attributes, ', "image": "data:image/svg+xml;base64,', Base64.encode(bytes(output)), '"}'))));
         output = string(abi.encodePacked('data:application/json;base64,', json));
 
         return output;
     }
-    
+
     function claim(uint256 tokenId) public nonReentrant {
         require(tokenId > 0 && tokenId <= 1000, "Token ID invalid");
-        require(_maxSupply > totalSupply(), "Mint is over"); 
+        require(_maxSupply > totalSupply(), "Mint is over");
         _safeMint(_msgSender(), tokenId);
     }
 
     function withdraw() public onlyOwner(){
         payable(msg.sender).transfer(address(this).balance);
     }
-    
-    function maxSupply() public view returns (uint256) { 
+
+    function maxSupply() public view returns (uint256) {
         return _maxSupply;
     }
-    
-    function reduceSupply(uint256 value) public onlyOwner(){ 
-        require(value > 0 && value < _maxSupply, "Value not in required bounds"); 
-        _maxSupply = value; 
+
+    function reduceSupply(uint256 value) public onlyOwner(){
+        require(value > 0 && value < _maxSupply, "Value not in required bounds");
+        _maxSupply = value;
     }
-    
+
     function endMint() public onlyOwner(){
         require(_maxSupply != totalSupply(), "Mint is already over");
         _maxSupply = totalSupply(); // this kills the mint
     }
-    
+
     function toString(uint256 value) internal pure returns (string memory) {
     // Inspired by OraclizeAPI's implementation - MIT license
     // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
@@ -1461,7 +1657,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         }
         return string(buffer);
     }
-    
+
     constructor() ERC721("Emoji Garden", "EMJG") Ownable() {}
 }
 
