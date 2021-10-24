@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
 
 /*
+
 (\_/)
 ( •_•)
 / > Bunny Hold
+
+by Christian Montoya 
 */
 
 pragma solidity ^0.8.0;
@@ -687,7 +690,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-        return string(abi.encodePacked("Emoji Garden Token"));
+        return string(abi.encodePacked("Bunny Hold Creature"));
     }
 
     /**
@@ -1264,12 +1267,12 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     string[7] private _backgrounds = [
         '<pattern id="b" x="0" y="0" width="100" height="100"><rect fill="#fff" fill-opacity="0" width="100" height="100"></rect></pattern>',
-        '<pattern id="b" x="0" y="0" width="90" height="90" patternUnits="userSpaceOnUse"><g fill="#fff" fill-opacity="0.2"><circle xmlns="http://www.w3.org/2000/svg" fill-opacity="1" fill="#06B" cx="45" cy="45" r="10"/><circle cx="0" cy="90" r="10"/><circle cx="90" cy="90" r="10"/><circle cx="90" cy="0" r="10"/><circle cx="0" cy="0" r="10"/></g></pattern>',
-        '<pattern id="b" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse"><polygon fill="#fff" fill-opacity="0.2" points="24 24 12 24 18 18 24 12 24 0 24 0 12 12 0 0 0 12 6 18 12 24 24 24 "/></pattern>',
-        '<pattern id="b" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse"><polygon fill="#fff" fill-opacity="0.2" points="0 0 12 0 0 12"/></pattern>',
-        '<pattern id="b" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect fill="#fff" fill-opacity="0.2" x="20" y="20" width="20" height="20"></rect></pattern>',
-        '<pattern id="b" x="10" y="10" width="20" height="20" patternUnits="userSpaceOnUse"><circle fill="#fff" cx="10" cy="10" r="10" opacity="0.1"/></pattern>',
-        '<pattern id="b" x="0" y="0" width="42" height="42" patternUnits="userSpaceOnUse"><g fill="none" fill-rule="evenodd"><g fill="#fff" fill-opacity="0.15"><path d="M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z"/></g></g></pattern>'
+        '<pattern id="b" x="0" y="0" width="90" height="90" patternUnits="userSpaceOnUse"><g fill="#fff" opacity="0.15"><circle xmlns="http://www.w3.org/2000/svg" fill-opacity="1" fill="#06B" cx="45" cy="45" r="10"/><circle cx="0" cy="90" r="10"/><circle cx="90" cy="90" r="10"/><circle cx="90" cy="0" r="10"/><circle cx="0" cy="0" r="10"/></g></pattern>',
+        '<pattern id="b" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse"><polygon fill="#fff" opacity="0.15" points="24 24 12 24 18 18 24 12 24 0 24 0 12 12 0 0 0 12 6 18 12 24 24 24 "/></pattern>',
+        '<pattern id="b" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse"><polygon fill="#fff" opacity="0.15" points="0 0 12 0 0 12"/></pattern>',
+        '<pattern id="b" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect fill="#fff" opacity="0.15" x="0" y="0" width="20" height="20"/><rect fill="#fff" opacity="0.15" x="20" y="20" width="20" height="20"/></pattern>',
+        '<pattern id="b" x="10" y="10" width="20" height="20" patternUnits="userSpaceOnUse"><circle fill="#fff" cx="10" cy="10" r="10" opacity="0.15"/></pattern>',
+        '<pattern id="b" x="0" y="0" width="42" height="42" patternUnits="userSpaceOnUse"><g fill="none" fill-rule="evenodd"><g fill="#fff" opacity="0.15"><path d="M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z"/></g></g></pattern>'
     ];
 
     string[3] private _earIds = [
@@ -1639,12 +1642,17 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         bunny.animal = string(abi.encodePacked(bunny.animal, ' #', toString(tokenId)));
 
         json = string(abi.encodePacked('{"name":"',bunny.animal,'", "description":"A cute creature generated and stored entirely on-chain.","attributes":',json));
-        json = Base64.encode(bytes(string(abi.encodePacked(', "image": "data:image/svg+xml;base64,', Base64.encode(bytes(output)), '"}'))));
+        json = Base64.encode(bytes(string(abi.encodePacked(json, ', "image": "data:image/svg+xml;base64,', Base64.encode(bytes(output)), '"}'))));
         output = string(abi.encodePacked('data:application/json;base64,', json));
 
         return output;
     }
-
+    
+    /* TO DO: 
+     * Check Emoji Garden contract for minting (if address owns garden and token ID is not already existing as a Bunny Hold)
+     * Support multi-claim
+     * Anything else? Seems done!
+     */ 
     function claim(uint256 tokenId) public nonReentrant {
         require(tokenId > 0 && tokenId <= 1000, "Token ID invalid");
         require(_maxSupply > totalSupply(), "Mint is over");
@@ -1660,7 +1668,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function reduceSupply(uint256 value) public onlyOwner(){
-        require(value > 0 && value < _maxSupply, "Value not in required bounds");
+        require(value >= totalSupply() && value < _maxSupply, "Value not in required bounds");
         _maxSupply = value;
     }
 
@@ -1691,7 +1699,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         return string(buffer);
     }
 
-    constructor() ERC721("Emoji Garden", "EMJG") Ownable() {}
+    constructor() ERC721("Bunny Hold", "BNYHLD") Ownable() {}
 }
 
 /// [MIT License]
