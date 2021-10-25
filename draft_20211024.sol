@@ -6,7 +6,7 @@
 ( •_•)
 / > Bunny Hold
 
-by Christian Montoya 
+by Christian Montoya
 */
 
 pragma solidity ^0.8.0;
@@ -1282,41 +1282,49 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
     ];
 
     string[3] private _ears = [
-        '(\\_/)',
+        '(\\__/)',
         '{\\__/}',
         '/\\_/\\'
     ];
 
-    string[13] private _faceIds = [
+    string[17] private _faceIds = [
         'Calm',
         'Puzzled',
         'Kitty',
         'Mischievous',
         'Happy',
-        'Skeptical',
+        'Timid',
         'Kawaii',
         'Derpy',
         'Loud',
         'Disappointed',
+        'Smug',
+        'Skeptical',
         'Mysterious',
         'Rabid',
+        'Victorious',
+        'Desperate',
         'Human'
     ];
 
-    string[13] private _faces = [
-        unicode"( •_•)",
+    string[17] private _faces = [
+        unicode"(  •_•)",
         unicode"( • . •)",
         unicode"(=•ㅅ•)",
         unicode"( • - •)",
         unicode"( ^_^)",
-        unicode"( '.')",
+        unicode"(  ' . ')",
         unicode"(˵╹ω╹)",
         unicode"( • ∇ •)",
-        unicode"( °□°）",
+        unicode"( ° □ °)",
         unicode"( T_T)",
-        unicode"(｡◕◕)",
-        unicode"(ミ●﹏☉)",
-        unicode"( ͡° ͜ʖ ͡°)"
+        unicode"(  ᵔᴥᵔ)",
+        unicode"(  •̃_•̃ )",
+        unicode"( ◕｡◕)",
+        unicode"ミ●˾☉",
+        unicode"(  •̀ᴗ•́ )",
+        unicode"(｡•́‿•̀)",
+        unicode"( ಠʖ̯ಠ)"
     ];
 
     string[3] private _bodyIds = [
@@ -1471,7 +1479,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         bunnyData memory bunny;
 
         // 3 types of ears, differing rarity
-        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "1"))) % 7;
         bunny.ears = _ears[0];
         if(rand > 5) {
             bunny.ears = _ears[2];
@@ -1480,34 +1488,31 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
             bunny.ears = _ears[1];
         }
 
-        // 13 types of faces, also differing rarity
-        uint256 faceRange = 5;
-        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 5;
-        if(rand >= 4) {
-            faceRange = 13;
+        // 17 types of faces, also differing rarity
+        uint256 faceRange = 7;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        if(rand >= 5) {
+            faceRange = 17;
         }
         else if(rand >= 2) {
-            faceRange = 10;
+            faceRange = 12;
         }
-        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % faceRange;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "2"))) % faceRange;
         bunny.face = _faces[rand];
         delete faceRange;
 
         // 3 types of bodies, also differing rarity
-        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % 9;
-        // bunny.bodyId = _bodyIds[0];
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "3"))) % 9;
         bunny.body = _bodiesRaw[0];
         if(rand >= 8) {
-            // bunny.bodyId = _bodyIds[2];
             bunny.body = _bodiesRaw[2];
         }
         else if(rand >= 6) {
-            // bunny.bodyId = _bodyIds[1];
             bunny.body = _bodiesRaw[1];
         }
 
         // lots of possible emoji
-        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _emojis.length;
+        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % _emojis.length;
         bunny.emoji = _emojis[rand];
         if(strcmp(bunny.bodyId,"Back")) {
             bunny.body = string(abi.encodePacked(bunny.emoji, bunny.body));
@@ -1524,15 +1529,15 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         bunnyData memory bunny;
 
-        // random background color swatch
-        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _colorSwatchIds.length;
+        // random background gradient
+        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "4"))) % _colorSwatchIds.length;
         bunny.colorSwatchId = _colorSwatchIds[rand];
         bunny.colorSwatchOne = _colorSwatchOnes[rand];
         bunny.colorSwatchTwo = _colorSwatchTwos[rand];
 
-        // random background bg
+        // random background pattern
         if(tokenId < 386) {
-            rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _backgroundIds.length;
+            rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "5"))) % _backgroundIds.length;
         }
         else {
             rand = 0;
@@ -1541,7 +1546,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         bunny.background = _backgrounds[rand];
 
         // 3 types of ears, differing rarity
-        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "1"))) % 7;
         bunny.earId = _earIds[0];
         bunny.ears = _ears[0];
         if(rand > 5) {
@@ -1553,16 +1558,16 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
             bunny.ears = _ears[1];
         }
 
-        // 13 types of faces, also differing rarity
-        uint256 faceRange = 5;
-        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 5;
-        if(rand >= 4) {
-            faceRange = 13;
+        // 17 types of faces, also differing rarity
+        uint256 faceRange = 7;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        if(rand >= 5) {
+            faceRange = 17;
         }
         else if(rand >= 2) {
-            faceRange = 10;
+            faceRange = 12;
         }
-        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % faceRange;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "2"))) % faceRange;
         bunny.faceId = _faceIds[rand];
         bunny.face = _faces[rand];
         delete faceRange;
@@ -1577,7 +1582,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         }
 
         // 3 types of bodies, also differing rarity
-        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % 9;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "3"))) % 9;
         bunny.bodyId = _bodyIds[0];
         bunny.body = _bodies[0];
         if(rand >= 8) {
@@ -1590,7 +1595,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         }
 
         // lots of possible emoji
-        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % _emojis.length;
+        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % _emojis.length;
         bunny.emoji = _emojis[rand];
         if(strcmp(bunny.bodyId,"Back")) {
             bunny.body = string(abi.encodePacked(bunny.emoji, "<tspan class='tt'>", bunny.body, "</tspan>"));
@@ -1601,8 +1606,8 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         string[15] memory parts;
 
-        parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 200 200">';
-        parts[1] = "<style>text{font-size:32pt;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:bold;text-anchor:middle}.tt{fill:#fff}#stop1{stop-color:";
+        parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 200 200" width="100%" height="100%">';
+        parts[1] = "<style>text{font-size:32pt;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:bold;text-anchor:middle}.tt{fill:#fff;white-space:pre}#stop1{stop-color:";
         parts[2] = bunny.colorSwatchOne;
         parts[3] = '}#stop2{stop-color:';
         parts[4] = bunny.colorSwatchTwo;
@@ -1633,7 +1638,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         parts[11] = bunny.bodyId;
         parts[12] = '"},{"trait_type":"Holding","value":"';
         parts[13] = bunny.emoji;
-        parts[14] = '"]';
+        parts[14] = '"}]';
 
         string memory json = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]));
 
@@ -1647,12 +1652,12 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         return output;
     }
-    
-    /* TO DO: 
+
+    /* TO DO:
      * Check Emoji Garden contract for minting (if address owns garden and token ID is not already existing as a Bunny Hold)
      * Support multi-claim
      * Anything else? Seems done!
-     */ 
+     */
     function claim(uint256 tokenId) public nonReentrant {
         require(tokenId > 0 && tokenId <= 1000, "Token ID invalid");
         require(_maxSupply > totalSupply(), "Mint is over");
