@@ -1196,12 +1196,17 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 
 
 
-
+interface EmojiGardenInterface {
+    function ownerOf(uint256 tokenId) external view returns (address owner);
+}
 
 
 contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     uint256 private _maxSupply = 1000; // most we will ever have - this number can be lowered but not raised
+    
+    // Genesis Contract
+    EmojiGardenInterface public emojiGardenContract = EmojiGardenInterface(0x4a15C2d191D70722552d8F67B61A36784E9d475D); 
 
     struct bunnyData {
         string colorSwatchId;
@@ -1474,7 +1479,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function bunnyString(uint256 tokenId) public view returns (string memory) {
-        require(ownerOf(tokenId) != address(0), "ERC721: tokenURI query for nonexistent token");
+        require(ownerOf(tokenId) != address(0), "ERC721: bunnyString query for nonexistent token");
 
         bunnyData memory bunny;
 
@@ -1514,7 +1519,7 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         // lots of possible emoji
         rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % _emojis.length;
         bunny.emoji = _emojis[rand];
-        if(strcmp(bunny.bodyId,"Back")) {
+        if(strcmp(bunny.body,"< \\")) {
             bunny.body = string(abi.encodePacked(bunny.emoji, bunny.body));
         }
         else {
@@ -1522,6 +1527,98 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
         }
 
         return string(abi.encodePacked(bunny.ears, "\n", bunny.face, "\n", bunny.body));
+    }
+    
+    function bunnySVG(uint256 tokenId) public view returns (string memory) { 
+        require(ownerOf(tokenId) != address(0), "ERC721: bunnySVG query for nonexistent token");
+
+        bunnyData memory bunny;
+
+        // random background gradient
+        uint256 rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "4"))) % _colorSwatchIds.length;
+        bunny.colorSwatchOne = _colorSwatchOnes[rand];
+        bunny.colorSwatchTwo = _colorSwatchTwos[rand];
+
+        // random background pattern
+        if(tokenId < 386) {
+            rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "5"))) % _backgrounds.length;
+        }
+        else {
+            rand = 0;
+        }
+        bunny.background = _backgrounds[rand];
+
+        // 3 types of ears, differing rarity
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "1"))) % 7;
+        bunny.earId = _earIds[0];
+        bunny.ears = _ears[0];
+        if(rand > 5) {
+            bunny.earId = _earIds[2];
+            bunny.ears = _ears[2];
+        }
+        else if(rand > 3) {
+            bunny.earId = _earIds[1];
+            bunny.ears = _ears[1];
+        }
+
+        // 17 types of faces, also differing rarity
+        uint256 faceRange = 7;
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this)))) % 7;
+        if(rand >= 5) {
+            faceRange = 17;
+        }
+        else if(rand >= 2) {
+            faceRange = 12;
+        }
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "2"))) % faceRange;
+        bunny.faceId = _faceIds[rand];
+        bunny.face = _faces[rand];
+        delete faceRange;
+
+        // 3 types of bodies, also differing rarity
+        rand = uint256(keccak256(abi.encodePacked(tokenId, address(this), "3"))) % 9;
+        bunny.bodyId = _bodyIds[0];
+        bunny.body = _bodies[0];
+        if(rand >= 8) {
+            bunny.bodyId = _bodyIds[2];
+            bunny.body = _bodies[2];
+        }
+        else if(rand >= 6) {
+            bunny.bodyId = _bodyIds[1];
+            bunny.body = _bodies[1];
+        }
+
+        // lots of possible emoji
+        rand = uint256(keccak256(abi.encodePacked(address(this), tokenId))) % _emojis.length;
+        bunny.emoji = _emojis[rand];
+        if(strcmp(bunny.bodyId,"Back")) {
+            bunny.body = string(abi.encodePacked(bunny.emoji, "<tspan class='tt'>", bunny.body, "</tspan>"));
+        }
+        else {
+            bunny.body = string(abi.encodePacked("<tspan class='tt'>", bunny.body, "</tspan>", bunny.emoji));
+        }
+
+        string[14] memory parts;
+
+        parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 200 200" width="100%" height="100%">';
+        parts[1] = "<style>text{font-size:32pt;font-family:'Helvetica Neue'\,Arial\,sans-serif;font-weight:bold;text-anchor:middle}.tt{fill:#fff;white-space:pre}#stop1{stop-color:";
+        parts[2] = bunny.colorSwatchOne;
+        parts[3] = '}#stop2{stop-color:';
+        parts[4] = bunny.colorSwatchTwo;
+        parts[5] = "}</style><defs><linearGradient id='a' x1='0' x2='0' y1='0' y2='1'><stop offset='0' id='stop1' /><stop offset='1' id='stop2' /></linearGradient></defs><rect width='100%' height='100%' fill='url(#a)'/>";
+        parts[6] = bunny.background;
+        parts[7] = "<rect width='100%' height='100%' fill='url(#b)'/><text class='tt' x='50%' y='28%'>";
+        parts[8] = bunny.ears;
+        parts[9] = "</text><text class='tt' x='50%' y='56%'>";
+        parts[10] = bunny.face;
+        parts[11] = "</text><text x='50%' y='87%'>";
+        parts[12] = bunny.body;
+        parts[13] = "</text></svg>";
+
+        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]));
+        output = string(abi.encodePacked(output, parts[7], parts[8], parts[9], parts[10], parts[11], parts[12], parts[13]));
+
+        return output;   
     }
 
     function tokenURI(uint256 tokenId) override public view returns (string memory) {
@@ -1652,16 +1749,28 @@ contract BunnyHold is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         return output;
     }
-
-    /* TO DO:
-     * Check Emoji Garden contract for minting (if address owns garden and token ID is not already existing as a Bunny Hold)
-     * Support multi-claim
-     * Anything else? Seems done!
-     */
-    function claim(uint256 tokenId) public nonReentrant {
+    
+    function claimWithGarden(uint256 tokenId) public nonReentrant {
         require(tokenId > 0 && tokenId <= 1000, "Token ID invalid");
         require(_maxSupply > totalSupply(), "Mint is over");
+        require(emojiGardenContract.ownerOf(tokenId) == msg.sender, "Not the owner of this garden");
         _safeMint(_msgSender(), tokenId);
+    }
+    
+    function claimToWithGarden(address recipient, uint256 tokenId) public nonReentrant { 
+        require(tokenId > 0 && tokenId <= 1000, "Token ID invalid");
+        require(_maxSupply > totalSupply(), "Mint is over");
+        require(emojiGardenContract.ownerOf(tokenId) == msg.sender, "Not the owner of this garden");
+        _safeMint(address(recipient), tokenId);
+    }
+
+    function multiClaimWithGardens(uint256[] memory tokenIds) public nonReentrant {
+        require(_maxSupply > totalSupply(), "Mint is over");
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            require(tokenIds[i] > 0 && tokenIds[i] <= 1000, "Token ID invalid");
+            require(emojiGardenContract.ownerOf(tokenIds[i]) == msg.sender, "Not the owner of this garden");
+            _safeMint(_msgSender(), tokenIds[i]);
+        }
     }
 
     function withdraw() public onlyOwner(){
