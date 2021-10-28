@@ -16,7 +16,7 @@
 		<div class="row row-underline">
 			<div class="col"><!-- HEADER -->
 				<div style="float:right;padding-left:1em;text-align:right">
-					Chain: ETH<br>
+					Chain: Ethereum<br>
 					Max supply: 1k<br>
 					1 Emoji Garden = 1 Basic Bun claim
 				</div>
@@ -28,18 +28,81 @@
 				<h1 class="display-3" style="height:0;position:relative;left:1.3em;top:-1.8em;clear:both;">Basic Buns</h1>
 			</div>
 		</div>
-		<div class="row row-underline">
+		<div id="connect" class="row row-underline">
 			<div class="col">
 				<p>Basic Buns is the second NFT project in the Millyverse. 1,000 Basic Buns are available to claim for free for Emoji Garden holders. Each garden entitles you to a bun (unless it has already been claimed). Simply provide the token IDs of your garden(s) and you can mint bun(s) for just the cost of gas.</p>
 				<p>Connect your Metamask wallet to claim your Basic Bun(s).<p>
-				<p class="text-center"><a href="#" class="btn btn-shadow btn-secondary text-mono">Connect Wallet</a></p>
+				<p class="text-center"><a id="web3-connect" href="#" class="btn btn-shadow btn-secondary text-mono">Connect Wallet</a></p>
 			</div>
 			<div class="col" id="examples">
 				<p><img src="examples.png" width="420" height="420" alt=""></p>
 				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as SVG and plain text.</p>
 			</div>
 		</div>
+		
+		<div id="mintable" class="row row-underline" style="display:none">
+			<div class="col"> 
+				<p>Connected wallet: <span id="wallet-address">...</span></p>
+				<p>Total minted: <span id="total-supply">xx</span> of <span id="max-supply">yy</span></p>
+			</div>
+		</div>
+		
+		<div id="complete" class="row row-underline" style="display:none">
+			<div class="col"> 
+				<p>All Buns have been minted!</p>
+			</div>
+		</div>
 	</div>
 	
+	<script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+	<script type="text/javascript">
+	var web3 = new Web3(Web3.givenProvider);
+	var account = "";
+	
+	const bunnyContract = "0xbAdA1670F5Daebf475E326040756c017E17bA740"; 
+	const jsonInterface = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"bunnySVG","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"bunnyString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"claimToWithGarden","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"claimWithGarden","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"emojiGardenContract","outputs":[{"internalType":"contract EmojiGardenInterface","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"endMint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"tokenIds","type":"uint256[]"}],"name":"multiClaimWithGardens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"reduceSupply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]; 
+	
+	var contract = new web3.eth.Contract(jsonInterface, emojiContract);
+	
+	document.getElementById('web3-connect').addEventListener('click', function(evt) {
+		evt.preventDefault(); 
+        getAccount();
+    });
+	
+	async function getAccount() { 
+		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+		account = accounts[0]; 
+		document.getElementById('wallet-address').textContent = ''+account; 
+		document.getElementById('connect').style.display = 'none'; 
+		const totalMinted = await contract.methods.totalSupply().call(); 
+		const maxSupply = await contract.methods.maxSupply().call(); 
+		if(totalMinted < maxSupply) { 
+			enableMinting(totalMinted, maxSupply); 
+		}
+		else { 
+			document.getElementById('complete').style.display = 'flex'; 
+		}
+	}
+	
+	function enableMinting(totalSupply, maxSupply) { 
+		document.getElementById('total-supply').textContent = totalSupply;
+		document.getElementById('max-supply').textContent = maxSupply; 
+		document.getElementById('mintable').style.display = 'flex'; 
+	}
+	
+	function showMintLoading() { 
+		document.getElementById('mint-result').textContent = "Loading..."; 
+		document.getElementById('mint-result').style.display = 'block'; 
+		document.getElementById('mint-buttons').style.display = 'none'; 
+	}
+	
+	function showMintResult(outcome) { 
+		document.getElementById('mint-result').innerHTML = ''+outcome; 
+	}
+	
+	function showMintError(outcome) { 
+		document.getElementById('mint-result').innerHTML = ''+outcome; 
+	}
+	</script>
 </body>
 </html>
