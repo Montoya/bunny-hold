@@ -77,7 +77,11 @@
 		account = accounts[0];
 		document.getElementById('wallet-address').textContent = ''+account;
 		document.getElementById('connect').style.display = 'none';
-		const isFinalMinted = await contract.methods.ownerOf(1000).call();
+		contract.methods.ownerOf(1000).call().then(function(response) {
+
+		}).catch(function(err) {
+			// public mint is still open 
+		});
 		const totalMinted = await contract.methods.totalSupply().call();
 		const maxSupply = await contract.methods.maxSupply().call();
 		if(!isFinalMinted && totalMinted < maxSupply) {
