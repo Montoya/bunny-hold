@@ -100,7 +100,7 @@
 			showMintLoading(); 
 			var amount = parseInt(document.getElementById('amount-to-mint').value); 
 			if(1==amount) { 
-				contract.methods.mint().send({"from":account,"value":25000000000000000}).then(function(response) { 
+				contract.methods.mint().send({"from":account,"value":25000000000000000}).then(function(result) { 
 					showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
 				}).catch(function(err) { 
 					showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
@@ -108,7 +108,7 @@
 			}
 			else { 
 				var priceValue = 25000000000000000 * amount; 
-				contract.methods.mintMulti(amount).send({"from":account,"value":priceValue}).then(function(response) { 
+				contract.methods.mintMulti(amount).send({"from":account,"value":priceValue}).then(function(result) { 
 					showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
 				}).catch(function(err) { 
 					showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
