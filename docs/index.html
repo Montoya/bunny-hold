@@ -30,40 +30,29 @@
 				<h1 class="display-3" style="height:0;position:relative;left:1.3em;top:-1.8em;clear:both;">Basic Buns</h1>
 			</div>
 		</div>
-		<div id="connect" class="row row-underline">
+		<div class="row row-underline">
 			<div class="col">
-				<p>Basic Buns is the second NFT project by <a href="https://twitter.com/MidwitMilhouse" target="_blank">@MidwitMilhouse</a>. 1,000 Basic Buns are waiting for you on the Ethereum blockchain. 416 are available to claim for holders of the first 416 <a href="https://twitter.com/EmojiGardenNFT" target="_blank">Emoji Garden NFTs</a>, while 584 are available in a public mint for 0.025 ETH each.</p>
-				<p>Basic Buns are totally random, generated and stored on-chain, and revealed immediately. They come with rich traits compatible with OpenSea. Plus, not all the creatures are bunnies... there are two more creature types that are rare and then really rare! What kind of bun will you get?</p>
-				<p>Connect your Metamask wallet to mint your Basic Buns!<p>
-				<p id="connect-button-container" class="text-center"><a id="web3-connect" href="#" class="btn btn-shadow btn-secondary text-mono">Connect Metamask</a></p>
+				<div id="connect">
+					<p>Basic Buns is the second NFT project by <a href="https://twitter.com/MidwitMilhouse" target="_blank">@MidwitMilhouse</a>. 1,000 Basic Buns are waiting for you on the Ethereum blockchain. 416 are available to claim for holders of the first 416 <a href="https://twitter.com/EmojiGardenNFT" target="_blank">Emoji Garden NFTs</a>, while 584 are available in a public mint for 0.025 ETH each.</p>
+					<p>Basic Buns are totally random, generated and stored on-chain, and revealed immediately. They come with rich traits compatible with OpenSea. Plus, not all the creatures are bunnies... there are two more creature types that are rare and then really rare! What kind of bun will you get?</p>
+					<p>Connect your Metamask wallet to mint your Basic Buns!<p>
+					<p id="connect-button-container" class="text-center"><a id="web3-connect" href="#" class="btn btn-shadow btn-secondary text-mono">Connect Metamask</a></p>
+				</div>
+				<div id="mintable" style="display:none">
+					<p>Connected wallet: <span id="wallet-address">...</span></p>
+					<p>Total minted: <span id="total-supply">8</span> of <span id="max-supply">1000</span></p>
+				</div>
+				<div id="complete" style="display:none">
+					<p>All Buns have been minted! Thank you!</p>
+					<p>Check out the collection on <a href="https://opensea.io/collection/basic-buns" target="_blank">OpenSea</a>.</p>
+				</div>
 			</div>
 			<div class="col" id="examples">
 				<p><img src="examples.png" width="420" height="420" alt=""></p>
 				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as images and plain text.</p>
 			</div>
 		</div>
-
-		<div id="mintable" class="row row-underline" style="display:none">
-			<div class="col">
-				<p>Connected wallet: <span id="wallet-address">...</span></p>
-				<p>Total minted: <span id="total-supply">8</span> of <span id="max-supply">1000</span></p>
-			</div>
-			<div class="col" id="examples">
-				<p><img src="examples.png" width="420" height="420" alt=""></p>
-				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as images and plain text.</p>
-			</div>
-		</div>
-
-		<div id="complete" class="row row-underline" style="display:none">
-			<div class="col">
-				<p>All Buns have been minted! Thank you!</p>
-				<p>Check out the collection on <a href="https://opensea.io/collection/basic-buns" target="_blank">OpenSea</a>.</p>
-			</div>
-			<div class="col" id="examples">
-				<p><img src="examples.png" width="420" height="420" alt=""></p>
-				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as images and plain text.</p>
-			</div>
-		</div>
+		
 	</div>
 
 	<script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
@@ -90,7 +79,7 @@
 		const maxSupply = await contract.methods.maxSupply().call();
 		contract.methods.ownerOf(1).call().then(function(response) {
 			// public mint is done 
-			document.getElementById('complete').style.display = 'flex';
+			document.getElementById('complete').style.display = 'block';
 		}).catch(function(err) {
 			// public mint is still open 
 			enableMinting(totalMinted, maxSupply); 
@@ -100,7 +89,7 @@
 	function enableMinting(totalSupply, maxSupply) {
 		document.getElementById('total-supply').textContent = totalSupply;
 		document.getElementById('max-supply').textContent = maxSupply;
-		document.getElementById('mintable').style.display = 'flex';
+		document.getElementById('mintable').style.display = 'block';
 	}
 
 	function showMintLoading() {
