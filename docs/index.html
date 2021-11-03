@@ -86,14 +86,13 @@
 		account = accounts[0];
 		document.getElementById('wallet-address').textContent = ''+account;
 		document.getElementById('connect').style.display = 'none';
-		
+		const totalMinted = await contract.methods.totalSupply().call();
+		const maxSupply = await contract.methods.maxSupply().call();
 		contract.methods.ownerOf(1).call().then(function(response) {
 			// public mint is done 
 			document.getElementById('complete').style.display = 'flex';
 		}).catch(function(err) {
 			// public mint is still open 
-			const totalMinted = await contract.methods.totalSupply().call();
-			const maxSupply = await contract.methods.maxSupply().call();
 			enableMinting(totalMinted, maxSupply); 
 		});
 	}
