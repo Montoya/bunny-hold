@@ -77,7 +77,7 @@
 	async function getAccount() {
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 		account = ''+accounts[0];
-		accountString = account.slice(0,5)+'...'+account.slice(-3); 
+		accountString = account.slice(0,7)+'...'+account.slice(-3); 
 		document.getElementById('wallet-address').textContent = accountString;
 		document.getElementById('connect').style.display = 'none';
 		const totalMinted = await contract.methods.totalSupply().call();
@@ -99,14 +99,15 @@
 			showMintLoading(); 
 			var amount = parseInt(document.getElementById('amount-to-mint').value); 
 			if(1==amount) { 
-				contract.methods.mint.call().then(function(response) { 
+				contract.methods.mint.send({"from":account,"value":25000000000000000}).then(function(response) { 
 					showMintResult(response); 
 				}).catch(function(err) { 
 					showMintError(err); 
 				}); 
 			}
 			else { 
-				contract.methods.mintMulti.call(amount).then(function(response) { 
+				var priceValue = 25000000000000000 * amount; 
+				contract.methods.mintMulti.send({"from":account,"value":priceValue}).then(function(response) { 
 					showMintResult(response); 
 				}).catch(function(err) { 
 					showMintError(err); 
