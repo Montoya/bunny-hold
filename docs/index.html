@@ -76,7 +76,8 @@
 
 	async function getAccount() {
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-		account = accounts[0];
+		account = ''+accounts[0];
+		accountString = account.slice(0,5)+'...'+account.slice(-3); 
 		document.getElementById('wallet-address').textContent = ''+account;
 		document.getElementById('connect').style.display = 'none';
 		const totalMinted = await contract.methods.totalSupply().call();
