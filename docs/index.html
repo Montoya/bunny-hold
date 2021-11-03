@@ -102,15 +102,15 @@
 				contract.methods.mint().send({"from":account,"value":25000000000000000}).then(function(response) { 
 					showMintResult(response); 
 				}).catch(function(err) { 
-					showMintError(err); 
+					showMintError(err["message"]); 
 				}); 
 			}
 			else { 
 				var priceValue = 25000000000000000 * amount; 
-				contract.methods.mintMulti().send({"from":account,"value":priceValue}).then(function(response) { 
+				contract.methods.mintMulti(amount).send({"from":account,"value":priceValue}).then(function(response) { 
 					showMintResult(response); 
 				}).catch(function(err) { 
-					showMintError(err); 
+					showMintError(err["message"]); 
 				}); 
 			}
 		}); 
