@@ -46,13 +46,22 @@
 		<div id="mintable" class="row row-underline" style="display:none">
 			<div class="col">
 				<p>Connected wallet: <span id="wallet-address">...</span></p>
-				<p>Total claimed: <span id="total-supply">xx</span> of <span id="max-supply">yy</span></p>
+				<p>Total minted: <span id="total-supply">8</span> of <span id="max-supply">1000</span></p>
+			</div>
+			<div class="col" id="examples">
+				<p><img src="examples.png" width="420" height="420" alt=""></p>
+				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as images and plain text.</p>
 			</div>
 		</div>
 
 		<div id="complete" class="row row-underline" style="display:none">
 			<div class="col">
-				<p>All Buns have been minted!</p>
+				<p>All Buns have been minted! Thank you!</p>
+				<p>Check out the collection on <a href="https://opensea.io/collection/basic-buns" target="_blank">OpenSea</a>.</p>
+			</div>
+			<div class="col" id="examples">
+				<p><img src="examples.png" width="420" height="420" alt=""></p>
+				<p>Example mints from testnet. Each bun is generated entirely on-chain using randomized data. They can be exported as images and plain text.</p>
 			</div>
 		</div>
 	</div>
@@ -77,22 +86,19 @@
 		account = accounts[0];
 		document.getElementById('wallet-address').textContent = ''+account;
 		document.getElementById('connect').style.display = 'none';
-		contract.methods.ownerOf(1000).call().then(function(response) {
-
+		
+		contract.methods.ownerOf(1).call().then(function(response) {
+			// public mint is done 
+			document.getElementById('complete').style.display = 'flex';
 		}).catch(function(err) {
 			// public mint is still open 
+			const totalMinted = await contract.methods.totalSupply().call();
+			const maxSupply = await contract.methods.maxSupply().call();
+			enableMinting(totalMinted, maxSupply); 
 		});
-		const totalMinted = await contract.methods.totalSupply().call();
-		const maxSupply = await contract.methods.maxSupply().call();
-		if(!isFinalMinted && totalMinted < maxSupply) {
-			enableMinting(isFinalMinted, totalMinted, maxSupply);
-		}
-		else {
-			document.getElementById('complete').style.display = 'flex';
-		}
 	}
 
-	function enableMinting(isFinalMinted, totalSupply, maxSupply) {
+	function enableMinting(totalSupply, maxSupply) {
 		document.getElementById('total-supply').textContent = totalSupply;
 		document.getElementById('max-supply').textContent = maxSupply;
 		document.getElementById('mintable').style.display = 'flex';
