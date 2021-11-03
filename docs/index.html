@@ -96,21 +96,22 @@
 		document.getElementById('max-supply').textContent = maxSupply;
 		document.getElementById('mintable').style.display = 'block';
 		document.getElementById('mint-button').addEventListener('click', function(evt) { 
+			evt.preventDefault();
 			showMintLoading(); 
 			var amount = parseInt(document.getElementById('amount-to-mint').value); 
 			if(1==amount) { 
 				contract.methods.mint().send({"from":account,"value":25000000000000000}).then(function(response) { 
-					showMintResult(response); 
+					showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
 				}).catch(function(err) { 
-					showMintError(err["message"]); 
+					showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
 				}); 
 			}
 			else { 
 				var priceValue = 25000000000000000 * amount; 
 				contract.methods.mintMulti(amount).send({"from":account,"value":priceValue}).then(function(response) { 
-					showMintResult(response); 
+					showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
 				}).catch(function(err) { 
-					showMintError(err["message"]); 
+					showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
 				}); 
 			}
 		}); 
