@@ -80,7 +80,7 @@
 		document.getElementById('connect').style.display = 'none';
 		const totalMinted = await contract.methods.totalSupply().call();
 		const maxSupply = await contract.methods.maxSupply().call();
-		contract.methods.ownerOf(1).call().then(function(response) {
+		contract.methods.ownerOf(1000).call().then(function(response) {
 			// public mint is done 
 			document.getElementById('complete').style.display = 'block';
 		}).catch(function(err) {
