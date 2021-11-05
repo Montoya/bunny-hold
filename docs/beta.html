@@ -148,9 +148,33 @@
 			if(gardensUnclaimed.length > 0) { 
 				document.getElementById('garden-to-claim').value = gardensUnclaimed[0]; 
 				document.getElementById('gardens-to-claim').value = gardensUnclaimed.join(',');
+				enableClaims(); 
 				document.getElementById('claimable').style.display = 'block'; 
 			}
 		}
+	}
+	
+	function enableClaims() { 
+		document.getElementById('claim-button').addEventListener('click', function(evt) { 
+			evt.preventDefault();
+			showMintLoading(); 
+			var gardenId = parseInt(document.getElementById('garden-to-claim').value); 
+			contract.methods.claimWithGarden(gardenId).send({"from":account}).then(function(result) { 
+				showMintResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
+			}).catch(function(err) { 
+				showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
+			}); 
+		}); 
+		document.getElementById('claim-all-button').addEventListener('click', function(evt) { 
+			evt.preventDefault();
+			showMintLoading(); 
+			var gardens = document.getElementById('gardens-to-claim').value; 
+			contract.methods.multiClaimWithGardens(gardens).send({"from":account}).then(function(result) { 
+				showMintResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
+			}).catch(function(err) { 
+				showMintError(err["message"]+" <a href='/'>Try again.</a>"); 
+			}); 
+		}); 
 	}
 
 	function showMintLoading() {
