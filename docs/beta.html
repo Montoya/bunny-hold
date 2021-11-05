@@ -183,6 +183,8 @@
 		document.getElementById('mint-result').textContent = "Loading...";
 		document.getElementById('mint-result').style.display = 'block';
 		document.getElementById('mint-buttons').style.display = 'none';
+		document.getElementById('claim-all').style.display = 'none';
+		document.getElementById('claim-one').style.display = 'none';
 	}
 
 	function showMintResult(outcome) {
@@ -191,6 +193,9 @@
 
 	function showMintError(outcome) {
 		document.getElementById('mint-result').innerHTML = ''+outcome;
+		document.getElementById('mint-buttons').style.display = 'block';
+		document.getElementById('claim-all').style.display = 'block';
+		document.getElementById('claim-one').style.display = 'block';
 	}
 	
 	function showClaimResult(outcome) {
@@ -199,6 +204,9 @@
 
 	function showClaimError(outcome) {
 		document.getElementById('claim-result').innerHTML = ''+outcome;
+		document.getElementById('mint-buttons').style.display = 'block';
+		document.getElementById('claim-all').style.display = 'block';
+		document.getElementById('claim-one').style.display = 'block';
 	}
 	</script>
 </body>
