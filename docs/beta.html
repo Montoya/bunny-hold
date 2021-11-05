@@ -128,10 +128,15 @@
 	
 	function checkGardens() { 
 		emojiContract.methods.balanceOf(account).call().then(function(result) { 
-			console.log(result); 
-			document.getElementById('claimable').style.display = 'block'; 
-		}).error(function(err) { 
-		
+			result = parseInt(result); 
+			if(result > 0) { 
+				var gardensToCheck = []; 
+				for(var i = 0;i<result;i++) { 
+					gardensToCheck[] = await contract.methods.tokenOfOwnerByIndex(account,i).call(); 
+				}
+				console.log(gardensToCheck); 
+				document.getElementById('claimable').style.display = 'block'; 
+			}
 		}); 
 	}
 
