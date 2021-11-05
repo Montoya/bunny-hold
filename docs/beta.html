@@ -130,7 +130,7 @@
 		var balance = await emojiContract.methods.balanceOf(account).call(); 
 		if(balance > 0) { 
 			var gardensToCheck = []; 
-			for(var i = 0;i<result;i++) { 
+			for(var i = 0;i<balance;i++) { 
 				gardensToCheck[i] = await contract.methods.tokenOfOwnerByIndex(account,i).call(); 
 			}
 			console.log(gardensToCheck); 
