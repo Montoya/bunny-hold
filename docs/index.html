@@ -46,6 +46,12 @@
 					<p id="mint-buttons">Amount to mint: <input type="number" id="amount-to-mint" name="amountToMint" min="1" max="20" value="1"> <a href="#" id="mint-button" class="btn btn-shadow btn-secondary text-mono">Mint</a></p>
 					<p id="mint-result">&nbsp;</p>
 				</div>
+				<div id="claimable" style="display:none">
+					<p>You can claim some buns with gardens!</p>
+					<p id="claim-all">Claim for gardens: <input type="text" id="gardens-to-claim" name="gardensToClaim" value=""> <a href="#" id="claim-all-button" class="btn btn-shadow btn-secondary text-mono">Claim</a></p>
+					<p id="claim-one">Claim for one garden: <input type="text" id="garden-to-claim" name="gardenToClaim" value=""> <a href="#" id="claim-button" class="btn btn-shadow btn-secondary text-mono">Claim</a></p>
+					<p id="claim-result">&nbsp;</p>
+				</div>
 				<div id="complete" style="display:none">
 					<p>All Buns have been minted! Thank you!</p>
 					<p>Check out the collection on <a href="https://opensea.io/collection/basic-buns" target="_blank">OpenSea</a>.</p>
@@ -66,8 +72,13 @@
 
 	const bunnyContract = "0x6f13d82d5D501B2eebB94A34BbF8Bfdf20440079";
 	const jsonInterface = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"basePrice","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"bunnySVG","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"bunnyString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"claimToWithGarden","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"claimWithGarden","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"claimWithHonoraryGarden","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"emojiGardenContract","outputs":[{"internalType":"contract EmojiGardenInterface","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"endMint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mintMulti","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"tokenIds","type":"uint256[]"}],"name":"multiClaimWithGardens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"priceValue","type":"uint256"}],"name":"ownerSetPrice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"reduceSupply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+	
+	const emojiAddress = "0x690dBdf6bB1712f01b34e80c25553DB869dF8Bf9"; 
+	const emojiInterface = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"mintOne","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"mintThree","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"mintTwo","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"ownerClaim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"priceValue","type":"uint256"}],"name":"ownerSetPrice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji1","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji2","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji3","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji4","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji5","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji6","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji7","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji8","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emoji9","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"emojiString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]; 
 
 	var contract = new web3.eth.Contract(jsonInterface, bunnyContract);
+	
+	var emojiContract = new web3.eth.Contract(emojiInterface, emojiAddress);
 
 	document.getElementById('web3-connect').addEventListener('click', function(evt) {
 		evt.preventDefault();
@@ -88,6 +99,7 @@
 		}).catch(function(err) {
 			// public mint is still open 
 			enableMinting(totalMinted, maxSupply); 
+			checkGardens(); 
 		});
 	}
 
@@ -116,11 +128,63 @@
 			}
 		}); 
 	}
+	
+	async function checkGardens() { 
+		var balance = await emojiContract.methods.balanceOf(account).call(); 
+		if(balance > 0) { 
+			var gardensUnclaimed = []; 
+			for(var i = 0;i<balance;i++) { 
+				var gardenToCheck = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call(); 
+				gardenToCheck = parseInt(gardenToCheck);
+				if(gardenToCheck < 417) { 
+					var addy = 0; 
+					try { 
+						addy = await contract.methods.ownerOf(gardenToCheck).call(); 
+					} catch(e) { } 
+					if(addy == 0) { 
+						gardensUnclaimed.push(gardenToCheck); 
+					}
+				}
+			}
+			if(gardensUnclaimed.length > 0) { 
+				document.getElementById('garden-to-claim').value = gardensUnclaimed[0]; 
+				document.getElementById('gardens-to-claim').value = gardensUnclaimed.join(',');
+				enableClaims(); 
+				document.getElementById('claimable').style.display = 'block'; 
+			}
+		}
+	}
+	
+	function enableClaims() { 
+		document.getElementById('claim-button').addEventListener('click', function(evt) { 
+			evt.preventDefault();
+			showMintLoading(); 
+			var gardenId = parseInt(document.getElementById('garden-to-claim').value); 
+			contract.methods.claimWithGarden(gardenId).send({"from":account}).then(function(result) { 
+				showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
+			}).catch(function(err) { 
+				showClaimError(err["message"]+" <a href='/'>Try again.</a>"); 
+			}); 
+		}); 
+		document.getElementById('claim-all-button').addEventListener('click', function(evt) { 
+			evt.preventDefault();
+			showMintLoading(); 
+			var gardens = document.getElementById('gardens-to-claim').value; 
+			gardens = gardens.split(','); 
+			contract.methods.multiClaimWithGardens(gardens).send({"from":account}).then(function(result) { 
+				showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
+			}).catch(function(err) { 
+				showClaimError(err["message"]+" <a href='/'>Try again.</a>"); 
+			}); 
+		}); 
+	}
 
 	function showMintLoading() {
 		document.getElementById('mint-result').textContent = "Loading...";
 		document.getElementById('mint-result').style.display = 'block';
 		document.getElementById('mint-buttons').style.display = 'none';
+		document.getElementById('claim-all').style.display = 'none';
+		document.getElementById('claim-one').style.display = 'none';
 	}
 
 	function showMintResult(outcome) {
@@ -129,6 +193,20 @@
 
 	function showMintError(outcome) {
 		document.getElementById('mint-result').innerHTML = ''+outcome;
+		document.getElementById('mint-buttons').style.display = 'block';
+		document.getElementById('claim-all').style.display = 'block';
+		document.getElementById('claim-one').style.display = 'block';
+	}
+	
+	function showClaimResult(outcome) {
+		document.getElementById('claim-result').innerHTML = ''+outcome;
+	}
+
+	function showClaimError(outcome) {
+		document.getElementById('claim-result').innerHTML = ''+outcome;
+		document.getElementById('mint-buttons').style.display = 'block';
+		document.getElementById('claim-all').style.display = 'block';
+		document.getElementById('claim-one').style.display = 'block';
 	}
 	</script>
 </body>
