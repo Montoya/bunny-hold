@@ -48,6 +48,8 @@
 				</div>
 				<div id="claimable" style="display:none">
 					<p>You can claim some buns with gardens!</p>
+					<p id="claim-all">Claim for gardens: <input type="text" id="gardens-to-claim" name="gardensToClaim" value=""> <a href="#" id="claim-all-button" class="btn btn-shadow btn-secondary text-mono">Claim</a></p>
+					<p id="claim-one">Claim for one garden: <input type="text" id="garden-to-claim" name="gardenToClaim" value=""> <a href="#" id="claim-button" class="btn btn-shadow btn-secondary text-mono">Claim</a></p>
 				</div>
 				<div id="complete" style="display:none">
 					<p>All Buns have been minted! Thank you!</p>
@@ -145,6 +147,8 @@
 				}
 			}
 			if(gardensUnclaimed.length > 0) { 
+				document.getElementById('garden-to-claim').value = gardensUnclaimed[0]; 
+				document.getElementById('gardens-to-claim').value = gardensUnclaimed.join(',');
 				document.getElementById('claimable').style.display = 'block'; 
 			}
 		}
