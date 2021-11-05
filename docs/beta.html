@@ -129,17 +129,18 @@
 	async function checkGardens() { 
 		var balance = await emojiContract.methods.balanceOf(account).call(); 
 		if(balance > 0) { 
-			var gardensToCheck = []; 
+			var gardensUnclaimed = []; 
 			for(var i = 0;i<balance;i++) { 
-				gardensToCheck[i] = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call(); 
+				var gardenToCheck = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call(); 
+				gardenToCheck = parseInt(gardenToCheck);
+				if(gardenToCheck < 417 || gardenToCheck > 4419) { 
+					if(gardenToCheck > 4419) { gardenToCheck = gardenToCheck - 4054; }
+					var addy = contract.methods.ownerOf(gardenToCheck).call(); 
+					console.log(addy); 
+				}
 			}
-			console.log(gardensToCheck); 
 			document.getElementById('claimable').style.display = 'block'; 
 		}
-	}
-	
-	function fetchGardenId(id) { 
-		
 	}
 
 	function showMintLoading() {
