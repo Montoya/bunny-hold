@@ -135,8 +135,7 @@
 			for(var i = 0;i<balance;i++) { 
 				var gardenToCheck = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call(); 
 				gardenToCheck = parseInt(gardenToCheck);
-				if(gardenToCheck < 417 || gardenToCheck > 4419) { 
-					if(gardenToCheck > 4419) { gardenToCheck = gardenToCheck - 4054; }
+				if(gardenToCheck < 417) { 
 					var addy = 0; 
 					try { 
 						addy = await contract.methods.ownerOf(gardenToCheck).call(); 
