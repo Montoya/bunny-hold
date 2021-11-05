@@ -131,7 +131,7 @@
 		if(balance > 0) { 
 			var gardensToCheck = []; 
 			for(var i = 0;i<balance;i++) { 
-				gardensToCheck[i] = await contract.methods.tokenOfOwnerByIndex(account,i).call(); 
+				gardensToCheck[i] = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call(); 
 			}
 			console.log(gardensToCheck); 
 			document.getElementById('claimable').style.display = 'block'; 
