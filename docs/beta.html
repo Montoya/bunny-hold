@@ -127,7 +127,7 @@
 	}
 	
 	function checkGardens() { 
-		emojiContract.methods.balanceOf(''+account).call().then(function(result) { 
+		emojiContract.methods.balanceOf(account).call().then(function(result) { 
 			console.log(result); 
 			document.getElementById('claimable').style.display = 'block'; 
 		}).error(function(err) { 
