@@ -139,13 +139,14 @@
 					try { 
 						addy = await contract.methods.ownerOf(gardenToCheck).call(); 
 					} catch(e) { } 
-					if(addy != 0) { 
+					if(addy == 0) { 
 						gardensUnclaimed.push(gardenToCheck); 
 					}
 				}
 			}
-			console.log(gardensUnclaimed); 
-			document.getElementById('claimable').style.display = 'block'; 
+			if(gardensUnclaimed.length > 0) { 
+				document.getElementById('claimable').style.display = 'block'; 
+			}
 		}
 	}
 
