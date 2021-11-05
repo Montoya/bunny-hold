@@ -169,6 +169,7 @@
 			evt.preventDefault();
 			showMintLoading(); 
 			var gardens = document.getElementById('gardens-to-claim').value; 
+			gardens = gardens.split(','); 
 			contract.methods.multiClaimWithGardens(gardens).send({"from":account}).then(function(result) { 
 				showMintResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!"); 
 			}).catch(function(err) { 
