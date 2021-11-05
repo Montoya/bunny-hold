@@ -126,7 +126,7 @@
 		}); 
 	}
 	
-	function checkGardens() { 
+	async function checkGardens() { 
 		var balance = await emojiContract.methods.balanceOf(account).call(); 
 		if(balance > 0) { 
 			var gardensToCheck = []; 
