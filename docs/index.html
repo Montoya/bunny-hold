@@ -158,11 +158,18 @@
 				}
 			}
 			if(honoraryGardenUnclaimed !== null) {
-				gardensUnclaimed.unshift(honoraryGardenUnclaimed);
+				document.getElementById('garden-to-claim').value = honoraryGardenUnclaimed;
 			}
-			if(gardensUnclaimed.length > 0) { 
-				document.getElementById('garden-to-claim').value = gardensUnclaimed[0];
+			else {
+				ocument.getElementById('garden-to-claim').value = gardensUnclaimed[0];
+			}
+			if(gardensUnclaimed.length > 1) {
 				document.getElementById('gardens-to-claim').value = gardensUnclaimed.join(',');
+			}
+			else {
+				document.getElementById('claim-all').style.display = 'none';
+			}
+			if(honoraryGardenUnclaimed !== null || gardensUnclaimed.length > 0) {
 				enableClaims();
 				document.getElementById('claimable').style.display = 'block';
 			}
@@ -174,11 +181,20 @@
 			evt.preventDefault();
 			showMintLoading();
 			var gardenId = parseInt(document.getElementById('garden-to-claim').value);
-			contract.methods.claimWithGarden(gardenId).send({"from":account}).then(function(result) {
-				showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
-			}).catch(function(err) {
-				showClaimError(err["message"]+" <a href='/'>Try again.</a>");
-			});
+			if(gardenId > 4419) {
+				contract.methods.claimWithHonoraryGarden(gardenId).send({"from":account}).then(function(result) {
+					showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
+				}).catch(function(err) {
+					showClaimError(err["message"]+" <a href='/'>Try again.</a>");
+				});
+			}
+			else {
+				contract.methods.claimWithGarden(gardenId).send({"from":account}).then(function(result) {
+					showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
+				}).catch(function(err) {
+					showClaimError(err["message"]+" <a href='/'>Try again.</a>");
+				});
+			}
 		});
 		document.getElementById('claim-all-button').addEventListener('click', function(evt) {
 			evt.preventDefault();
