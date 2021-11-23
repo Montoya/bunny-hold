@@ -11,7 +11,7 @@
 		#parent-content { max-width:768px !important; }
 		#viewNumber { width:4em; text-align:center; }
 		img { max-width:300px; max-height:300px; }
-		#viewer-content { font-family:monospace; }
+		#viewer-content { font-family:'Hack',monospace; }
 		#viewer-content p { margin-bottom:0.5em; }
 	</style>
 </head>
@@ -44,10 +44,16 @@
 			</div>
 		</div>
 		<div id="viewer-content" class="row row-underline text-mono" style="display:none">
-			<div id="svg-container" class="col-md">
+			<div id="svg-container" class="col-6">
 
 			</div>
-			<div id="png-container" class="col-md">
+			<div id="png-container" class="col-6">
+
+			</div>
+			<div id="text-container" class="col-6">
+
+			</div>
+			<div id="link-container" class="col-6">
 
 			</div>
 		</div>
@@ -239,6 +245,11 @@ function loadTokenById() {
 	}).finally(function() {
 		document.getElementById('viewBtn').style.visibility = 'visible';
 	});
+	bunnyContract.methods.bunnyString(id).call().then(function(result){
+		var preTag = document.createElement('pre');
+		preTag.textContent = ''+result;
+		document.getElementById('text-container').append(preTag);
+	}).catch(function(err) { }); 
 }
 
 
