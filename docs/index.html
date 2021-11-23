@@ -177,7 +177,9 @@ async function fetchAccountData() {
   
   bunnyContract.methods.ownerOf(1000).call().then(function(response) {
 	// public mint is done 
-	console.log(response); 
+	if(response===undefined) { 
+		throw("error"); 
+	}
 	document.getElementById('complete').style.display = 'block'; 
   }).catch(function(err) { 
 	enableMinting(totalMinted, maxSupply); 
