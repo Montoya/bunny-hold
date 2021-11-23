@@ -8,8 +8,9 @@
 		body { padding:48px 0; }
 		a, a:hover { color:#29f1c3; }
 		.row-underline { padding-bottom:1em; border-bottom:1px solid rgb(228, 226, 255); margin-bottom:1.5em; }
-		.container-md { max-width:1200px !important; }
+		.container-md { max-width:760px !important; }
 		#viewNumber { width:4em; text-align:center; }
+		img { max-width:300px; max-height:300px; }
 	</style>
 </head>
 <body>
@@ -40,7 +41,7 @@
 				<p id="message" style="display:none">&nbsp;</p>
 			</div>
 		</div>
-		<div id="viewer-content" class="row row-underline" style="display:none">
+		<div id="viewer-content" class="row row-underline text-mono" style="display:none">
 			<div id="svg-container" class="col">
 
 			</div>
@@ -207,6 +208,8 @@ function loadTokenById() {
 		var imageTag = document.createElement('img');
 		imageTag.width = '500';
 		imageTag.height = '500';
+		imageTag.title = 'BasicBunSVG';
+		imageTag.alt = 'BasicBunSVG';
 		imageTag.onload = function() {
 			var imageCanvas = document.createElement('canvas');
 			imageCanvas.width = '500';
@@ -217,12 +220,14 @@ function loadTokenById() {
 			var pngTag = document.createElement('img');
 			pngTag.width = '500';
 			pngTag.height = '500';
+			pngTag.title = 'BasicBunPNG';
+			pngTag.alt = 'BasicBunPNG';
 			pngTag.src = pngData;
-			document.getElementById('png-container').textContent = '';
+			document.getElementById('png-container').innerHTML = '<p>PNG</p>';
 			document.getElementById('png-container').appendChild(pngTag);
 		}
 		imageTag.src = encodedImage;
-		document.getElementById('svg-container').textContent = '';
+		document.getElementById('svg-container').innerHTML = '<p>SVG</p>';
 		document.getElementById('svg-container').appendChild(imageTag);
 		document.getElementById('viewer-content').style.display = 'block';
 		document.getElementById('viewBtn').style.visibility = 'visible';
