@@ -13,7 +13,7 @@
 		img { max-width:300px; max-height:300px; margin-bottom:0.5em; }
 		#viewer-content { font-family:'Hack',monospace; }
 		#viewer-content p { margin-bottom:0.5em; }
-		#text-container { white-space:pre; }
+		#text-container { white-space:pre; font-family:sans-serif; }
 	</style>
 </head>
 <body>
@@ -214,7 +214,7 @@ function loadTokenById() {
 		document.getElementById('message').style.display = 'none';
 		var jsonResult = JSON.parse(atob(result.slice(29)));
 		var encodedImage = jsonResult.image;
-		console.log(jsonResult); 
+		console.log(jsonResult);
 		var imageTag = document.createElement('img');
 		imageTag.width = '500';
 		imageTag.height = '500';
@@ -233,12 +233,23 @@ function loadTokenById() {
 			pngTag.title = 'BasicBunPNG';
 			pngTag.alt = 'BasicBunPNG';
 			pngTag.src = pngData;
-			document.getElementById('png-container').innerHTML = '<p>PNG</p>';
+			document.getElementById('png-container').innerHTML = '<p>PNG (right-click, save-as)</p>';
 			document.getElementById('png-container').appendChild(pngTag);
 		}
 		imageTag.src = encodedImage;
 		document.getElementById('svg-container').innerHTML = '<p>SVG</p>';
 		document.getElementById('svg-container').appendChild(imageTag);
+		var nameP = document.createElement('p');
+		nameP.textContent = ''+jsonResult.name;
+		document.getElementById('link-container').appendChild(nameP);
+		var openSeaLink = document.createElement('a');
+		var nameContent = jsonResult.name.split('#');
+		openSeaLink.href = "https://opensea.io/assets/0x6f13d82d5d501b2eebb94a34bbf8bfdf20440079/" + nameContent[1];
+		openSeaLink.textContent = "View on OpenSea";
+		openSeaLink.target = "_blank";
+		var openSeaP = document.createElement('p');
+		openSeaP.appendChild(openSeaLink);
+		document.getElementById('link-container').appendChild(openSeaP); 
 		document.getElementById('viewer-content').style.display = 'flex';
 		document.getElementById('viewBtn').style.visibility = 'visible';
 	}).catch(function(err) {
