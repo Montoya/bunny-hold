@@ -254,6 +254,10 @@ function loadTokenById() {
 		document.getElementById('link-container').appendChild(openSeaP);
 		document.getElementById('viewer-content').style.display = 'flex';
 		document.getElementById('viewBtn').style.visibility = 'visible';
+
+		var currentURL = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;    
+		window.history.pushState({ path: currentURL }, '', currentURL);
+
 	}).catch(function(err) {
 		document.getElementById('message').textContent = err['message'];
 		document.getElementById('message').style.display = 'block';
