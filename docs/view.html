@@ -224,6 +224,7 @@ function loadTokenById() {
 		imageTag.src = encodedImage;
 		document.getElementById('svg-container').textContent = '';
 		document.getElementById('svg-container').appendChild(imageTag);
+		document.getElementById('viewer-content').style.display = 'block';
 		document.getElementById('viewBtn').style.visibility = 'visible';
 	}).catch(function(err) {
 		document.getElementById('message').textContent = err['message'];
