@@ -113,7 +113,7 @@ function init() {
  */
 async function fetchAccountData() {
 
-  document.getElementById('connect').style.display = 'none';
+	document.getElementById('loading').style.display = 'none';
 
   // Get a Web3 instance for the wallet
   const web3 = new Web3(provider);
@@ -135,7 +135,6 @@ async function fetchAccountData() {
 
   bunnyContract = new web3.eth.Contract(bunnyInterface, bunnyAddress);
 
-	document.getElementById('loading').style.display = 'none';
 	document.getElementById('viewer').style.display = 'block';
 
 }
