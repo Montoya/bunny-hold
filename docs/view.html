@@ -46,10 +46,10 @@
 			</div>
 		</div>
 		<div id="viewer-content" class="row row-underline text-mono" style="display:none">
-			<div id="svg-container" class="col-6">
+			<div id="png-container" class="col-6">
 
 			</div>
-			<div id="png-container" class="col-6">
+			<div id="svg-container" class="col-6">
 
 			</div>
 			<div id="text-container" class="col-2">
@@ -163,7 +163,7 @@ async function fetchAccountData() {
 
 	var id = gup('id');
 	if(id!==null) {
-		document.getElementById('viewNumber').value = parseInt(id); 
+		document.getElementById('viewNumber').value = parseInt(id);
 	}
 
 	document.getElementById('viewer').style.display = 'block';
