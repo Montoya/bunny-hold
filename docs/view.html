@@ -194,10 +194,12 @@ function loadTokenById() {
 	document.getElementById('viewBtn').style.visibility = 'hidden';
 	contract.methods.bunnySVG(id).call().then(function(result){
 		document.getElementById('message').style.display = 'none';
-		console.log(JSON.parse(result)); 
+		console.log(JSON.parse(result));
 	}).catch(function(err) {
 		document.getElementById('message').textContent = err['message'];
 		document.getElementById('message').style.display = 'block';
+	}).finally(function() {
+		document.getElementById('viewBtn').style.visibility = 'visible';
 	});
 }
 
