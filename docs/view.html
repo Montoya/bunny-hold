@@ -133,15 +133,64 @@ async function fetchAccountData() {
   console.log("Got accounts", accounts);
   selectedAccount = accounts[0];
 
-  const accountString = selectedAccount.slice(0,7)+'...'+selectedAccount.slice(-3);
-  document.getElementById("wallet-address").textContent = accountString;
-
   bunnyContract = new web3.eth.Contract(bunnyInterface, bunnyAddress);
 
 	document.getElementById('loading').style.display = 'none';
-	document.getElementById('viewer').style.display = 'block'; 
+	document.getElementById('viewer').style.display = 'block';
 
 }
 
+/**
+ * Fetch account data for UI when
+ * - User switches accounts in wallet
+ * - User switches networks in wallet
+ * - User connects wallet initially
+ */
+async function refreshAccountData() {
+  await fetchAccountData(provider);
+}
+
+/**
+ * Connect wallet button pressed.
+ */
+async function onConnect() {
+
+  console.log("Opening a dialog", web3Modal);
+  try {
+    provider = await web3Modal.connect();
+  } catch(e) {
+    console.log("Could not get a wallet connection", e);
+    return;
+  }
+
+  // Subscribe to accounts change
+  provider.on("accountsChanged", (accounts) => {
+    fetchAccountData();
+  });
+
+  // Subscribe to chainId change
+  provider.on("chainChanged", (chainId) => {
+    fetchAccountData();
+  });
+
+  // Subscribe to networkId change
+  provider.on("networkChanged", (networkId) => {
+    fetchAccountData();
+  });
+
+  await refreshAccountData();
+}
+
+
+/**
+ * Main entry point.
+ */
+window.addEventListener('load', async () => {
+  init();
+  document.getElementById('web3-connect').addEventListener('click',function(evt) {
+	evt.preventDefault();
+	onConnect();
+  });
+});
 </body>
 </html>
