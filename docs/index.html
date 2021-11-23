@@ -238,7 +238,7 @@ window.addEventListener('load', async () => {
   init();
   document.getElementById('web3-connect').addEventListener('click',function(evt) { 
 	evt.preventDefault(); 
-	await web3Modal.clearCachedProvider();
+	web3Modal.clearCachedProvider();
 	onConnect(); 
   }); 
 });
