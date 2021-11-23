@@ -13,6 +13,7 @@
 		img { max-width:300px; max-height:300px; margin-bottom:0.5em; }
 		#viewer-content { font-family:'Hack',monospace; }
 		#viewer-content p { margin-bottom:0.5em; }
+		#text-container { white-space:pre; }
 	</style>
 </head>
 <body>
@@ -213,6 +214,7 @@ function loadTokenById() {
 		document.getElementById('message').style.display = 'none';
 		var jsonResult = JSON.parse(atob(result.slice(29)));
 		var encodedImage = jsonResult.image;
+		console.log(jsonResult); 
 		var imageTag = document.createElement('img');
 		imageTag.width = '500';
 		imageTag.height = '500';
