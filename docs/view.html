@@ -37,6 +37,7 @@
 		<div id="viewer" class="row row-underline" style="display:none">
 			<div class="col">
 				<p>Enter an ID to view: &nbsp;<input id="viewNumber" type="text" value="1"> <a href="#" id="viewBtn" class="btn btn-shadow btn-secondary text-mono">View</a></p>
+				<p id="message" style="display:none">&nbsp;</p>
 			</div>
 		</div>
 	</div>
@@ -137,6 +138,13 @@ async function fetchAccountData() {
 
 	document.getElementById('viewer').style.display = 'block';
 
+	document.getElementById('viewBtn').addEventListener('click', function(evt) {
+		evt.preventDefault();
+		loadTokenById();
+	});
+
+	loadTokenById();
+
 }
 
 /**
@@ -178,6 +186,19 @@ async function onConnect() {
   });
 
   await refreshAccountData();
+}
+
+
+function loadTokenById() {
+	var id = parseInt(document.getElementById('viewNumber').value);
+	document.getElementById('viewBtn').style.visibility = 'hidden';
+	contract.methods.bunnySVG(id).call().then(function(result){
+		document.getElementById('message').style.display = 'none';
+		console.log(JSON.parse(result)); 
+	}).catch(function(err) {
+		document.getElementById('message').textContent = err['message'];
+		document.getElementById('message').style.display = 'block';
+	});
 }
 
 
