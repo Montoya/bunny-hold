@@ -239,6 +239,7 @@ function loadTokenById() {
 		imageTag.src = encodedImage;
 		document.getElementById('svg-container').innerHTML = '<p>SVG</p>';
 		document.getElementById('svg-container').appendChild(imageTag);
+		document.getElementById('link-container').textContent = ''; 
 		var nameP = document.createElement('p');
 		nameP.textContent = ''+jsonResult.name;
 		document.getElementById('link-container').appendChild(nameP);
