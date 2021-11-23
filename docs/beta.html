@@ -249,7 +249,7 @@ function enableMinting(totalSupply, maxSupply) {
 		showMintLoading();
 		var amount = parseInt(document.getElementById('amount-to-mint').value);
 		if(1==amount) {
-			bunnyContract.methods.mint().send({"from":account,"value":25000000000000000}).then(function(result) {
+			bunnyContract.methods.mint().send({"from":selectedAccount,"value":25000000000000000}).then(function(result) {
 				showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
 			}).catch(function(err) {
 				showMintError(err["message"]+" <a href='/'>Try again.</a>");
@@ -257,7 +257,7 @@ function enableMinting(totalSupply, maxSupply) {
 		}
 		else {
 			var priceValue = 25000000000000000 * amount;
-			bunnyContract.methods.mintMulti(amount).send({"from":account,"value":priceValue}).then(function(result) {
+			bunnyContract.methods.mintMulti(amount).send({"from":selectedAccount,"value":priceValue}).then(function(result) {
 				showMintResult("Minted! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
 			}).catch(function(err) {
 				showMintError(err["message"]+" <a href='/'>Try again.</a>");
@@ -267,12 +267,12 @@ function enableMinting(totalSupply, maxSupply) {
 }
 
 async function checkGardens() {
-	var balance = await emojiContract.methods.balanceOf(account).call();
+	var balance = await emojiContract.methods.balanceOf(selectedAccount).call();
 	if(balance > 0) {
 		var gardensUnclaimed = [];
 		var honoraryGardenUnclaimed = null;
 		for(var i = 0;i<balance;i++) {
-			var gardenToCheck = await emojiContract.methods.tokenOfOwnerByIndex(account,i).call();
+			var gardenToCheck = await emojiContract.methods.tokenOfOwnerByIndex(selectedAccount,i).call();
 			gardenToCheck = parseInt(gardenToCheck);
 			if(gardenToCheck < 417) {
 				var addy = 0;
@@ -319,14 +319,14 @@ function enableClaims() {
 		showMintLoading();
 		var gardenId = parseInt(document.getElementById('garden-to-claim').value);
 		if(gardenId > 4419) {
-			bunnyContract.methods.claimWithHonoraryGarden(gardenId).send({"from":account}).then(function(result) {
+			bunnyContract.methods.claimWithHonoraryGarden(gardenId).send({"from":selectedAccount}).then(function(result) {
 				showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
 			}).catch(function(err) {
 				showClaimError(err["message"]+" <a href='/'>Try again.</a>");
 			});
 		}
 		else {
-			bunnyContract.methods.claimWithGarden(gardenId).send({"from":account}).then(function(result) {
+			bunnyContract.methods.claimWithGarden(gardenId).send({"from":selectedAccount}).then(function(result) {
 				showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
 			}).catch(function(err) {
 				showClaimError(err["message"]+" <a href='/'>Try again.</a>");
@@ -338,7 +338,7 @@ function enableClaims() {
 		showMintLoading();
 		var gardens = document.getElementById('gardens-to-claim').value;
 		gardens = gardens.split(',');
-		bunnyContract.methods.multiClaimWithGardens(gardens).send({"from":account}).then(function(result) {
+		bunnyContract.methods.multiClaimWithGardens(gardens).send({"from":selectedAccount}).then(function(result) {
 			showClaimResult("Claimed! Check transaction on <a target='_blank' href='https://etherscan.io/tx/"+result['transactionHash']+"'>Etherscan</a> or <a href='/'>mint again</a>!");
 		}).catch(function(err) {
 			showClaimError(err["message"]+" <a href='/'>Try again.</a>");
