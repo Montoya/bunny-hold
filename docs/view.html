@@ -246,10 +246,8 @@ function loadTokenById() {
 		document.getElementById('viewBtn').style.visibility = 'visible';
 	});
 	bunnyContract.methods.bunnyString(id).call().then(function(result){
-		var preTag = document.createElement('pre');
-		preTag.textContent = ''+result;
-		document.getElementById('text-container').append(preTag);
-	}).catch(function(err) { }); 
+		document.getElementById('text-container').textContent = ''+result;
+	}).catch(function(err) { });
 }
 
 
