@@ -14,6 +14,7 @@
 		#viewer-content { font-family:'Hack',monospace; }
 		#viewer-content p { margin-bottom:0.5em; }
 		#text-container { white-space:pre; font-family:sans-serif; }
+		#link-container { align-items:center; }
 	</style>
 </head>
 <body>
@@ -51,10 +52,10 @@
 			<div id="png-container" class="col-6">
 
 			</div>
-			<div id="text-container" class="col-6">
+			<div id="text-container" class="col-2">
 
 			</div>
-			<div id="link-container" class="col-6">
+			<div id="link-container" class="col-10">
 
 			</div>
 		</div>
@@ -239,7 +240,7 @@ function loadTokenById() {
 		imageTag.src = encodedImage;
 		document.getElementById('svg-container').innerHTML = '<p>SVG</p>';
 		document.getElementById('svg-container').appendChild(imageTag);
-		document.getElementById('link-container').textContent = ''; 
+		document.getElementById('link-container').textContent = '';
 		var nameP = document.createElement('p');
 		nameP.textContent = ''+jsonResult.name;
 		document.getElementById('link-container').appendChild(nameP);
