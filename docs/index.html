@@ -159,8 +159,9 @@ async function fetchAccountData() {
   // Load chain information over an HTTP API
   const chainData = evmChains.getChain(chainId);
   console.log('Connected chain is: '+chainData.name);
-  if(chainData.name!=="Ethereum Mainnet") { 
+  if(chainData.name!="Ethereum Mainnet") { 
 	alert("You must be connected to the Ethereum Mainnet network to use this site."); 
+	return; 
   }
 
   // Get list of accounts of the connected wallet
