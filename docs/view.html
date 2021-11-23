@@ -8,7 +8,7 @@
 		body { padding:48px 0; }
 		a, a:hover { color:#29f1c3; }
 		.row-underline { padding-bottom:1em; border-bottom:1px solid rgb(228, 226, 255); margin-bottom:1.5em; }
-		.container-md { max-width:760px !important; }
+		.container-md { max-width:1200px !important; }
 		#viewNumber { width:4em; text-align:center; }
 	</style>
 </head>
@@ -38,6 +38,14 @@
 			<div class="col">
 				<p>Enter an ID to view: &nbsp;<input id="viewNumber" type="text" value="1"> <a href="#" id="viewBtn" class="btn btn-shadow btn-secondary text-mono">View</a></p>
 				<p id="message" style="display:none">&nbsp;</p>
+			</div>
+		</div>
+		<div id="viewer-content" class="row row-underline" style="display:none">
+			<div id="svg-container" class="col">
+
+			</div>
+			<div id="png-container" class="col">
+
 			</div>
 		</div>
 	</div>
@@ -192,9 +200,31 @@ async function onConnect() {
 function loadTokenById() {
 	var id = parseInt(document.getElementById('viewNumber').value);
 	document.getElementById('viewBtn').style.visibility = 'hidden';
-	bunnyContract.methods.bunnySVG(id).call().then(function(result){
+	bunnyContract.methods.tokenURI(id).call().then(function(result){
 		document.getElementById('message').style.display = 'none';
-		console.log(JSON.parse(result));
+		var jsonResult = JSON.parse(atob(result.slice(29)));
+		var encodedImage = jsonResult.image;
+		var imageTag = document.createElement('img');
+		imageTag.width = '500';
+		imageTag.height = '500';
+		imageTag.onload = function() {
+			var imageCanvas = document.createElement('canvas');
+			imageCanvas.width = '500';
+			imageCanvas.height = '500';
+			const canvasCtx = imageCanvas.getContext('2d');
+			canvasCtx.drawImage(imageTag, 0, 0);
+			var pngData = imageCanvas.toDataURL('image/png');
+			var pngTag = document.createElement('img');
+			pngTag.width = '500';
+			pngTag.height = '500';
+			pngTag.src = pngData;
+			document.getElementById('png-container').textContent = '';
+			document.getElementById('png-container').appendChild(pngTag);
+		}
+		imageTag.src = encodedImage;
+		document.getElementById('svg-container').textContent = '';
+		document.getElementById('svg-container').appendChild(imageTag);
+		document.getElementById('viewBtn').style.visibility = 'visible';
 	}).catch(function(err) {
 		document.getElementById('message').textContent = err['message'];
 		document.getElementById('message').style.display = 'block';
